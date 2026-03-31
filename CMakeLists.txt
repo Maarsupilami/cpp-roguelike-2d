@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.28)
 project(DungeonRPG)
 
+# ── Language standard ─────────────────────────────────────────────────────────
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)  # for clangd / IDE tooling
 
-# Tell compiler to find headers
-include_directories(src/core)
-
-# The executable
-add_executable(dungeon src/main.cpp)
+# ── Dependencies ──────────────────────────────────────────────────────────────
+find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -18,9 +16,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
+# ── core_lib (INTERFACE — header-only) ────────────────────────────────────────
+# INTERFACE means no compilation; just propagates include paths to consumers.
+add_library(core_lib INTERFACE)
+target_include_directories(core_lib INTERFACE src/core)
+
+# ── dungeon (main executable) ─────────────────────────────────────────────────
+add_executable(dungeon src/main.cpp)
+target_link_libraries(dungeon
+    SFML::Graphics
+    SFML::Window
+    SFML::System
+    core_lib
+)
+
+# ── tests ─────────────────────────────────────────────────────────────────────
+# Tests link core_lib only — no SFML dependency in unit tests.
 include(GoogleTest)
 enable_testing()
 
-# add_executable(tests tests/main_test.cpp src/game/combat.cpp)
-# target_link_libraries(tests gtest_main)
-# gtest_discover_tests(tests)
+add_executable(tests tests/main_test.cpp)
+target_link_libraries(tests gtest_main core_lib)
+gtest_discover_tests(tests)
