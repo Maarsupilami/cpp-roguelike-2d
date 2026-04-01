@@ -35,6 +35,12 @@ target_link_libraries(dungeon
     core_lib
 )
 
+add_custom_command(TARGET dungeon POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:dungeon>/assets
+)
+
 # ── tests ─────────────────────────────────────────────────────────────────────
 # Tests link core_lib only — no SFML dependency in unit tests.
 include(GoogleTest)
