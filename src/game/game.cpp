@@ -7,6 +7,12 @@ Game::Game()
 
 void Game::run() {
     while (window_.isOpen()) {
+        playerState_ = (
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
+        ) ? PlayerState::Walking : PlayerState::Idle;
         while (const std::optional event = window_.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window_.close();
@@ -18,7 +24,11 @@ void Game::run() {
         }
         switch (state_) {
             case GameState::Explore:
-                renderer_.renderExplore(map_, playerRow_, playerCol_, direction_);
+                renderer_.renderExplore(map_,
+                                        playerRow_,
+                                        playerCol_,
+                                        direction_,
+                                        playerState_);
                 break;
         }
     }

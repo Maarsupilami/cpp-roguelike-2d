@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "direction.h"
 #include "map.h"
+#include "player_state.h"
 #include "render.h"
 
 // ── GameState ─────────────────────────────────────────────────────────────────
@@ -24,6 +25,7 @@ class Game {
         Map                 map_;
         GameState           state_{GameState::Explore};
         Direction           direction_  = Direction::Down;
+        PlayerState         playerState_ = PlayerState::Idle;
         int                 playerRow_ = 1;
         int                 playerCol_ = 1;
 };
