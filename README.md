@@ -1,4 +1,4 @@
-# Dungeon RPG 2D
+# Chronicles of Minh
 
 A 2D tile-based dungeon crawler built in C++23 with SFML 3.
 Continuation of [cpp-roguelike-cli](https://github.com/Maarsupilami/cpp-roguelike-cli).

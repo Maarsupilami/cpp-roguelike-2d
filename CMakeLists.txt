@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(DungeonRPG)
+project(ChroniclesOfMinh)
 
 # ── Language standard ─────────────────────────────────────────────────────────
 set(CMAKE_CXX_STANDARD 23)
@@ -21,24 +21,24 @@ FetchContent_MakeAvailable(googletest)
 add_library(core_lib INTERFACE)
 target_include_directories(core_lib INTERFACE src/core)
 
-# ── dungeon (main executable) ─────────────────────────────────────────────────
-add_executable(dungeon
+# ── chronicles (main executable) ─────────────────────────────────────────────────
+add_executable(chronicles
     src/main.cpp
     src/game/game.cpp
     src/game/map.cpp
     src/game/render.cpp
 )
-target_link_libraries(dungeon
+target_link_libraries(chronicles
     SFML::Graphics
     SFML::Window
     SFML::System
     core_lib
 )
 
-add_custom_command(TARGET dungeon POST_BUILD
+add_custom_command(TARGET chronicles POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets
-        $<TARGET_FILE_DIR:dungeon>/assets
+        $<TARGET_FILE_DIR:chronicles>/assets
 )
 
 # ── tests ─────────────────────────────────────────────────────────────────────

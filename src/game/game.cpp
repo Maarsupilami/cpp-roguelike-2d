@@ -1,7 +1,7 @@
 #include "game.h"
 
 Game::Game()
-    :   window_(sf::VideoMode({800, 600}), "DungeonRPG"),
+    :   window_(sf::VideoMode({800, 600}), "Chronicles of Minh"),
         renderer_(window_)
 {};
 
