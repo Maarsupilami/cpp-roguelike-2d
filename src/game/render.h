@@ -12,14 +12,15 @@ class Render {
         explicit Render(sf::RenderWindow& window);
 
         void renderExplore(const Map& map,
-                            int row, 
-                            int col,
+                            float pixelX,
+                            float pixelY,
                             Direction direction,
-                            PlayerState playerState);
+                            PlayerState playerState,
+                            float moveProgress);
 
     private:
         void drawMap(const Map& map);
-        void drawPlayer(int row, int col, Direction direction, PlayerState playerState);
+        void drawPlayer(float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress);
         void drawHud(int hp);
 
         sf::RenderWindow&   window_;

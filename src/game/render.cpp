@@ -1,16 +1,15 @@
 #include "render.h"
-#include "player_state.h"
 #include <stdexcept>
 
 Render::Render(sf::RenderWindow& window) : window_(window) {
     if (!font_.openFromFile("assets/fonts/PressStart2P-Regular.ttf"))
         throw std::runtime_error("Failed to load font: PressStart2P-Regular.ttf");
     // Idle textures
-    if (!playerTextureDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Down-Sheet.png"))
+    if (!playerTextureDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Down-Sheet_.png"))
         throw std::runtime_error("Failed to load texture: Idle_Down-Sheet.png");
-    if (!playerTextureUp_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Up-Sheet.png"))
+    if (!playerTextureUp_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Up-Sheet_.png"))
         throw std::runtime_error("Failed to load texture: Idle_Up-Sheet.png");
-    if (!playerTextureSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Side-Sheet.png"))
+    if (!playerTextureSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Side-Sheet_.png"))
         throw std::runtime_error("Failed to load texture: Idle_Side-Sheet.png");
     // Walking textures
     if (!playerTextureWalkingDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Run_Base/Run_Down-Sheet.png"))
@@ -23,10 +22,10 @@ Render::Render(sf::RenderWindow& window) : window_(window) {
 }
 
 void Render::renderExplore(
-        const Map& map, int row, int col, Direction direction, PlayerState playerState) {
+        const Map& map, float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress) {
     window_.clear(sf::Color(20, 20, 20));
     drawMap(map);
-    drawPlayer(row, col, direction, playerState);
+    drawPlayer(pixelX, pixelY, direction, playerState, moveProgress);
     drawHud(100);
     window_.display();
 }
@@ -43,18 +42,27 @@ void Render::drawMap(const Map& map) {
     }
 }
 
-void Render::drawPlayer(int row, int col, Direction direction, PlayerState playerState) {
-    if (playerState != prevState_ || direction != prevDir_) {
+void Render::drawPlayer(float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress) {
+    if (direction != prevDir_ ||
+        (playerState == PlayerState::Idle && prevState_ == PlayerState::Walking)) {
         currentFrame_ = 0;
         frameTime_ = 0.f;
-        prevState_ = playerState;
-        prevDir_ = direction;
     }
+    prevDir_   = direction;
+    prevState_ = playerState;
+
     int frameCount = (playerState == PlayerState::Idle) ? 4 : 6;
-    frameTime_ += animClock_.restart().asSeconds();
-    if (frameTime_ >= FRAME_DURATION) {
-        frameTime_ = 0.f;
-        currentFrame_ = (currentFrame_ + 1) % frameCount;
+
+    if (playerState == PlayerState::Walking) {
+        // Sync animation frame to movement progress — no timer needed.
+        currentFrame_ = static_cast<int>(moveProgress * frameCount) % frameCount;
+    } else {
+        // Idle: time-based animation.
+        frameTime_ += animClock_.restart().asSeconds();
+        if (frameTime_ >= 0.15f) {
+            frameTime_ = 0.f;
+            currentFrame_ = (currentFrame_ + 1) % frameCount;
+        }
     }
     switch (playerState) {
         case PlayerState::Idle:
@@ -100,7 +108,7 @@ void Render::drawPlayer(int row, int col, Direction direction, PlayerState playe
     }
 
     playerSprite_.setTextureRect(sf::IntRect({currentFrame_ * 64, 0}, {64, 64}));
-    playerSprite_.setPosition(sf::Vector2f(col * TILE_SIZE - 16.f, row * TILE_SIZE - 16.f));
+    playerSprite_.setPosition(sf::Vector2f(pixelX - 16.f, pixelY - 16.f));
     window_.draw(playerSprite_);
 }
 
