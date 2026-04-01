@@ -5,44 +5,60 @@
 int main(int argc, char *argv[])
 {
     sf::RenderWindow window(sf::VideoMode({800, 600}), "DungeonRPG");
+
+    // ── Map ───────────────────────────────────────────────────────────────────
     TileType map[ROWS][COLS];
 
+    // Fill border cells with Wall, everything else with Floor.
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
-            map[i][j] = (i == 0 || i == (ROWS - 1) || j == 0 || j == (COLS - 1))
+            map[i][j] = (i == 0 || i == ROWS - 1 || j == 0 || j == COLS - 1)
                 ? TileType::Wall : TileType::Floor;
         }
     }
 
-    // run the program as long as the window is open
+    // ── Shapes (created once, reused every frame) ─────────────────────────────
+    sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+    sf::RectangleShape player(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+    player.setFillColor(sf::Color::Magenta);
+
+    // ── Player state ──────────────────────────────────────────────────────────
+    int playerCol = 1;
+    int playerRow = 1;
+
+    // ── Game loop ─────────────────────────────────────────────────────────────
     while (window.isOpen()) {
-        // check all the window's events that were triggered since the last iteration of the loop
+
+        // — Input ——————————————————————————————————————————————————————————————
         while (const std::optional event = window.pollEvent()) {
-            // "close requested" event: we close the window
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             } else if (auto* e = event->getIf<sf::Event::KeyPressed>()) {
+                int newRow = playerRow;
+                int newCol = playerCol;
+
                 switch (e->code) {
-                    case sf::Keyboard::Key::W:
-                        std::cout << "UP!" << std::endl;
-                        break;
-                    case sf::Keyboard::Key::S:
-                        std::cout << "DOWN!" << std::endl;
-                        break;
-                    case sf::Keyboard::Key::A:
-                        std::cout << "LEFT!" << std::endl;
-                        break;
-                    case sf::Keyboard::Key::D:
-                        std::cout << "RIGHT!" << std::endl;
-                        break;
+                    case sf::Keyboard::Key::W: newRow -= 1; break;
+                    case sf::Keyboard::Key::S: newRow += 1; break;
+                    case sf::Keyboard::Key::A: newCol -= 1; break;
+                    case sf::Keyboard::Key::D: newCol += 1; break;
                     default:
                         std::cout << "A KEY IS PRESSED!" << std::endl;
                         break;
                 }
+
+                // Only move if the target cell is walkable.
+                if (map[newRow][newCol] == TileType::Floor) {
+                    playerRow = newRow;
+                    playerCol = newCol;
+                }
             }
         }
+
+        // — Render ——————————————————————————————————————————————————————————————
         window.clear(sf::Color(20, 20, 20));
-        sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+
+        // Draw tilemap.
         for (int r = 0; r < ROWS; ++r) {
             for (int c = 0; c < COLS; ++c) {
                 tile.setFillColor(map[r][c] == TileType::Wall
@@ -52,7 +68,13 @@ int main(int argc, char *argv[])
                 window.draw(tile);
             }
         }
+
+        // Draw player on top of tilemap.
+        player.setPosition(sf::Vector2f(playerCol * TILE_SIZE, playerRow * TILE_SIZE));
+        window.draw(player);
+
         window.display();
     }
+
     return 0;
 }
