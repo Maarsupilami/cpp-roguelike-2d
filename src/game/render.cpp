@@ -49,12 +49,12 @@ void Render::drawPlayer(int row, int col, Direction direction) {
             break;
         case Direction::Right:
             playerSprite_.setTexture(playerTextureSide_);
-            playerSprite_.setOrigin({64.f, 0.f});  // jobb széltől tükröz
+            playerSprite_.setOrigin({64.f, 0.f}); // Right side mirror
             playerSprite_.setScale({-1.f, 1.f});
             break;
         case Direction::Left:
             playerSprite_.setTexture(playerTextureSide_);
-            playerSprite_.setOrigin({0.f, 0.f});   // visszaáll
+            playerSprite_.setOrigin({0.f, 0.f});   // Back to base
             playerSprite_.setScale({1.f, 1.f});
             break;
     }
