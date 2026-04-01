@@ -22,4 +22,9 @@ class Render {
         sf::RectangleShape  tile_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
         sf::Texture         playerTexture_;
         sf::Sprite          playerSprite_{playerTexture_};
+        sf::Clock           animClock_;
+        int                 currentFrame_ = 0;
+        float               frameTime_ = 0.f;
+        const int           FRAME_COUNT = 4;
+        const float         FRAME_DURATION = 0.15f;
 };

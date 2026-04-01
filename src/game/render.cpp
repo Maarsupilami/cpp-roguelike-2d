@@ -30,6 +30,12 @@ void Render::drawMap(const Map& map) {
 }
 
 void Render::drawPlayer(int row, int col) {
+    frameTime_ += animClock_.restart().asSeconds();
+    if (frameTime_ >= FRAME_DURATION) {
+        frameTime_ = 0.f;
+        currentFrame_ = (currentFrame_ + 1) % FRAME_COUNT;
+    }
+    playerSprite_.setTextureRect(sf::IntRect({currentFrame_ * 64, 0}, {64, 64}));
     playerSprite_.setPosition(sf::Vector2f(col * TILE_SIZE - 16.f, row * TILE_SIZE - 16.f));
     window_.draw(playerSprite_);
 }
