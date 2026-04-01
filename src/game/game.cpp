@@ -18,7 +18,7 @@ void Game::run() {
         }
         switch (state_) {
             case GameState::Explore:
-                renderer_.renderExplore(map_, playerRow_, playerCol_);
+                renderer_.renderExplore(map_, playerRow_, playerCol_, direction_);
                 break;
         }
     }
@@ -30,12 +30,11 @@ void Game::handleExploreInput(const sf::Event& event) {
         int newCol = playerCol_;
 
         switch (e->code) {
-            case sf::Keyboard::Key::W: newRow -= 1; break;
-            case sf::Keyboard::Key::S: newRow += 1; break;
-            case sf::Keyboard::Key::A: newCol -= 1; break;
-            case sf::Keyboard::Key::D: newCol += 1; break;
-            default:
-                break;
+            case sf::Keyboard::Key::W: newRow -= 1; direction_ = Direction::Up; break;
+            case sf::Keyboard::Key::S: newRow += 1; direction_ = Direction::Down; break;
+            case sf::Keyboard::Key::A: newCol -= 1; direction_ = Direction::Right; break;
+            case sf::Keyboard::Key::D: newCol += 1; direction_ = Direction::Left; break;
+            default: break;
         }
 
         // Only move if the target cell is walkable.
