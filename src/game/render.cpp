@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 Render::Render(sf::RenderWindow& window) : window_(window) {
-    if (!font_.openFromFile("../assets/fonts/PressStart2P-Regular.ttf"))
+    if (!font_.openFromFile("assets/fonts/PressStart2P-Regular.ttf"))
         throw std::runtime_error("Failed to load font: PressStart2P-Regular.ttf");
 }
 
@@ -33,8 +33,8 @@ void Render::drawPlayer(int row, int col) {
 }
 
 void Render::drawHud(int hp) {
-    sf::Text text(font_, "HP: " + std::to_string(hp), 16);
-    text.setPosition({10.f, 10.f});
-    text.setFillColor(sf::Color::Red);
-    window_.draw(text);
+    hud_.setString("HP: " + std::to_string(hp));
+    hud_.setPosition({10.f, 10.f});
+    hud_.setFillColor(sf::Color::Red);
+    window_.draw(hud_);
 }

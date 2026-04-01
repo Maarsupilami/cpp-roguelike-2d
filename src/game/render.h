@@ -16,8 +16,9 @@ class Render {
         void drawPlayer(int row, int col);
         void drawHud(int hp);
 
-        sf::RenderWindow&  window_;
-        sf::Font           font_;
-        sf::RectangleShape tile_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
-        sf::RectangleShape player_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
+        sf::RenderWindow&   window_;
+        sf::Font            font_;
+        sf::Text            hud_{font_, "", 16};
+        sf::RectangleShape  tile_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
+        sf::RectangleShape  player_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
 };

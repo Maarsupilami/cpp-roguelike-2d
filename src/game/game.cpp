@@ -2,8 +2,7 @@
 
 Game::Game()
     :   window_(sf::VideoMode({800, 600}), "DungeonRPG"),
-        renderer_(window_),
-        playerRow_(1), playerCol_(1)
+        renderer_(window_)
 {};
 
 void Game::run() {
