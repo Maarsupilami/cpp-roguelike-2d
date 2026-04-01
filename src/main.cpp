@@ -7,16 +7,7 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(sf::VideoMode({800, 600}), "DungeonRPG");
 
     // ── Map ───────────────────────────────────────────────────────────────────
-    TileType map[ROWS][COLS];
-
-    // Fill border cells with Wall, everything else with Floor.
-    for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j) {
-            map[i][j] = (i == 0 || i == ROWS - 1 || j == 0 || j == COLS - 1)
-                ? TileType::Wall : TileType::Floor;
-        }
-    }
-
+    Map map;
     // ── Shapes (created once, reused every frame) ─────────────────────────────
     sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
     sf::RectangleShape player(sf::Vector2f(TILE_SIZE, TILE_SIZE));
@@ -48,7 +39,7 @@ int main(int argc, char *argv[])
                 }
 
                 // Only move if the target cell is walkable.
-                if (map[newRow][newCol] == TileType::Floor) {
+                if (map.isWalkable(newRow, newCol)) {
                     playerRow = newRow;
                     playerCol = newCol;
                 }
@@ -61,7 +52,7 @@ int main(int argc, char *argv[])
         // Draw tilemap.
         for (int r = 0; r < ROWS; ++r) {
             for (int c = 0; c < COLS; ++c) {
-                tile.setFillColor(map[r][c] == TileType::Wall
+                tile.setFillColor(!map.isWalkable(r, c)
                     ? sf::Color(80, 80, 80)
                     : sf::Color(60, 40, 20));
                 tile.setPosition(sf::Vector2f(c * TILE_SIZE, r * TILE_SIZE));
