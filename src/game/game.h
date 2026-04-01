@@ -5,6 +5,7 @@
 #include "player_state.h"
 #include "render.h"
 #include "classes/warrior.h"
+#include "enemies/goblin.h"
 
 // ── GameState ─────────────────────────────────────────────────────────────────
 enum class GameState { Explore };
@@ -49,4 +50,9 @@ class Game {
 
         // Character related.
         Warrior player_{"Minh"};
+
+        // Enemy related.
+        Goblin  enemy_{"Orc"};
+        int enemyRow_ = 5;
+        int enemyCol_ = 5;
 };

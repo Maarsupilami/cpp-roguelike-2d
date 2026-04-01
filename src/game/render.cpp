@@ -19,15 +19,19 @@ Render::Render(sf::RenderWindow& window) : window_(window) {
     if (!playerTextureWalkingSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Run_Base/Run_Side-Sheet.png"))
         throw std::runtime_error("Failed to load texture: Run_Side-Sheet.png");
     playerSprite_.setTextureRect(sf::IntRect({0, 0}, {64, 64}));
+    if (!enemyTextureDown_.loadFromFile("assets/Entities/Mobs/Orc Crew/Orc - Rogue/Idle/Idle-Sheet.png"))
+        throw std::runtime_error("Failed to load texture: Idle-Sheet.png");
 }
 
 void Render::renderExplore(
         const Map& map, float pixelX, float pixelY,
         Direction direction, PlayerState playerState, float moveProgress,
-        int hp, int maxHp) {
+        int hp, int maxHp,
+        int enemyRow, int enemyCol) {
     window_.clear(sf::Color(20, 20, 20));
     drawMap(map);
     drawPlayer(pixelX, pixelY, direction, playerState, moveProgress);
+    drawEnemy(enemyRow, enemyCol);
     drawHud(hp, maxHp);
     window_.display();
 }
@@ -112,6 +116,17 @@ void Render::drawPlayer(float pixelX, float pixelY, Direction direction, PlayerS
     playerSprite_.setTextureRect(sf::IntRect({currentFrame_ * 64, 0}, {64, 64}));
     playerSprite_.setPosition(sf::Vector2f(pixelX - 16.f, pixelY - 16.f));
     window_.draw(playerSprite_);
+}
+
+void Render::drawEnemy(int row, int col) {
+    enemyFrameTime_ += enemyClock_.restart().asSeconds();
+    if (enemyFrameTime_ >= 0.15f) {
+        enemyFrameTime_ = 0.f;
+        enemyFrame_ = (enemyFrame_ + 1) % 4;
+    }
+    enemySprite_.setTextureRect(sf::IntRect({enemyFrame_ * 32, 0}, {32, 32}));
+    enemySprite_.setPosition(sf::Vector2f(col * TILE_SIZE, row * TILE_SIZE));
+    window_.draw(enemySprite_);
 }
 
 void Render::drawHud(int hp, int maxHp) {

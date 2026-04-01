@@ -61,7 +61,9 @@ void Game::run() {
                                         playerState_,
                                         moveProgress_,
                                         player_.getHp(),
-                                        player_.getMaxHp());
+                                        player_.getMaxHp(),
+                                        enemyRow_,
+                                        enemyCol_);
                 break;
         }
     }

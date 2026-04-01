@@ -18,12 +18,17 @@ class Render {
                             PlayerState playerState,
                             float moveProgress,
                             int hp,
-                            int maxHp);
+                            int maxHp,
+                            int enemyRow,
+                            int enemyCol);
 
     private:
         void drawMap(const Map& map);
         void drawPlayer(float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress);
         void drawHud(int hp, int maxHp);
+        // Enemy
+        void drawEnemy(int row, int col);
+
 
         sf::RenderWindow&   window_;
         sf::Font            font_;
@@ -42,4 +47,10 @@ class Render {
         int                 currentFrame_ = 0;
         float               frameTime_ = 0.f;
         const float         FRAME_DURATION = 0.15f;
+        // Enemy
+        sf::Texture         enemyTextureDown_;
+        sf::Sprite          enemySprite_{enemyTextureDown_};
+        sf::Clock           enemyClock_;
+        int                 enemyFrame_ = 0;
+        float               enemyFrameTime_ = 0.f;
 };
