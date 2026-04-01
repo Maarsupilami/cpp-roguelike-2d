@@ -6,22 +6,17 @@ Game::Game()
 {};
 
 void Game::run() {
-    // ── Game loop ─────────────────────────────────────────────────────────────
     while (window_.isOpen()) {
         while (const std::optional event = window_.pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
+            if (event->is<sf::Event::Closed>())
                 window_.close();
-            }
-            // — Input ——————————————————————————————————————————————————————————————
             handleInput(*event);
         }
-        // — Render ——————————————————————————————————————————————————————————————
         render();
     }
-};
+}
 
 void Game::handleInput(const sf::Event& event) {
-    // — Input ——————————————————————————————————————————————————————————————
     if (auto* e = event.getIf<sf::Event::KeyPressed>()) {
         int newRow = playerRow_;
         int newCol = playerCol_;
@@ -41,20 +36,14 @@ void Game::handleInput(const sf::Event& event) {
             playerCol_ = newCol;
         }
     }
-};
+}
 
 void Game::render() {
-    // — Render ——————————————————————————————————————————————————————————————
     window_.clear(sf::Color(20, 20, 20));
-
-    // Draw tilemap.
     drawMap();
-
-    // Draw player on top of tilemap.
     drawPlayer();
-
     window_.display();
-};
+}
 
 void Game::drawMap() {
     for (int r = 0; r < ROWS; ++r) {
@@ -66,9 +55,10 @@ void Game::drawMap() {
             window_.draw(tile_);
         }
     }
-};
+}
+
 void Game::drawPlayer() {
     player_.setFillColor(sf::Color::Magenta);
     player_.setPosition(sf::Vector2f(playerCol_ * TILE_SIZE, playerRow_ * TILE_SIZE));
     window_.draw(player_);
-};
+}
