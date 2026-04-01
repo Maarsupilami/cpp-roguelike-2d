@@ -22,11 +22,13 @@ Render::Render(sf::RenderWindow& window) : window_(window) {
 }
 
 void Render::renderExplore(
-        const Map& map, float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress) {
+        const Map& map, float pixelX, float pixelY,
+        Direction direction, PlayerState playerState, float moveProgress,
+        int hp, int maxHp) {
     window_.clear(sf::Color(20, 20, 20));
     drawMap(map);
     drawPlayer(pixelX, pixelY, direction, playerState, moveProgress);
-    drawHud(100);
+    drawHud(hp, maxHp);
     window_.display();
 }
 
@@ -112,8 +114,8 @@ void Render::drawPlayer(float pixelX, float pixelY, Direction direction, PlayerS
     window_.draw(playerSprite_);
 }
 
-void Render::drawHud(int hp) {
-    hud_.setString("HP: " + std::to_string(hp));
+void Render::drawHud(int hp, int maxHp) {
+    hud_.setString("HP: " + std::to_string(hp) + "/" + std::to_string(maxHp));
     hud_.setPosition({10.f, 10.f});
     hud_.setFillColor(sf::Color::Red);
     window_.draw(hud_);

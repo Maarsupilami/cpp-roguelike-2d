@@ -59,7 +59,9 @@ void Game::run() {
                                         pixelY_,
                                         direction_,
                                         playerState_,
-                                        moveProgress_);
+                                        moveProgress_,
+                                        player_.getHp(),
+                                        player_.getMaxHp());
                 break;
         }
     }

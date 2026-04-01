@@ -4,6 +4,7 @@
 #include "map.h"
 #include "player_state.h"
 #include "render.h"
+#include "classes/warrior.h"
 
 // ── GameState ─────────────────────────────────────────────────────────────────
 enum class GameState { Explore };
@@ -45,4 +46,7 @@ class Game {
         // Pixel position passed to the renderer.
         float   pixelX_ = 1.f * TILE_SIZE;
         float   pixelY_ = 1.f * TILE_SIZE;
+
+        // Character related.
+        Warrior player_{"Minh"};
 };

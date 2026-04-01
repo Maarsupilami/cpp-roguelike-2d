@@ -16,12 +16,14 @@ class Render {
                             float pixelY,
                             Direction direction,
                             PlayerState playerState,
-                            float moveProgress);
+                            float moveProgress,
+                            int hp,
+                            int maxHp);
 
     private:
         void drawMap(const Map& map);
         void drawPlayer(float pixelX, float pixelY, Direction direction, PlayerState playerState, float moveProgress);
-        void drawHud(int hp);
+        void drawHud(int hp, int maxHp);
 
         sf::RenderWindow&   window_;
         sf::Font            font_;
