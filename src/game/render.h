@@ -20,5 +20,6 @@ class Render {
         sf::Font            font_;
         sf::Text            hud_{font_, "", 16};
         sf::RectangleShape  tile_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
-        sf::RectangleShape  player_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
+        sf::Texture         playerTexture_;
+        sf::Sprite          playerSprite_{playerTexture_};
 };

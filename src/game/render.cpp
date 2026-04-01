@@ -4,6 +4,9 @@
 Render::Render(sf::RenderWindow& window) : window_(window) {
     if (!font_.openFromFile("assets/fonts/PressStart2P-Regular.ttf"))
         throw std::runtime_error("Failed to load font: PressStart2P-Regular.ttf");
+    if (!playerTexture_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Down-Sheet.png"))
+        throw std::runtime_error("Failed to load texture: Idle_Down-Sheet.png");
+    playerSprite_.setTextureRect(sf::IntRect({0, 0}, {64, 64}));
 }
 
 void Render::renderExplore(const Map& map, int row, int col) {
@@ -27,9 +30,8 @@ void Render::drawMap(const Map& map) {
 }
 
 void Render::drawPlayer(int row, int col) {
-    player_.setFillColor(sf::Color::Magenta);
-    player_.setPosition(sf::Vector2f(col * TILE_SIZE, row * TILE_SIZE));
-    window_.draw(player_);
+    playerSprite_.setPosition(sf::Vector2f(col * TILE_SIZE - 16.f, row * TILE_SIZE - 16.f));
+    window_.draw(playerSprite_);
 }
 
 void Render::drawHud(int hp) {
