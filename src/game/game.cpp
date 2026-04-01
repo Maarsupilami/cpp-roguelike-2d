@@ -10,13 +10,21 @@ void Game::run() {
         while (const std::optional event = window_.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window_.close();
-            handleInput(*event);
+            switch (gameState_) {
+                case GameState::EXPLORE:
+                    handleExploreInput(*event);
+                    break;
+            }
         }
-        render();
+        switch (gameState_) {
+            case GameState::EXPLORE:
+                renderExplore();
+                break;
+        }
     }
 }
 
-void Game::handleInput(const sf::Event& event) {
+void Game::handleExploreInput(const sf::Event& event) {
     if (auto* e = event.getIf<sf::Event::KeyPressed>()) {
         int newRow = playerRow_;
         int newCol = playerCol_;
@@ -38,7 +46,7 @@ void Game::handleInput(const sf::Event& event) {
     }
 }
 
-void Game::render() {
+void Game::renderExplore() {
     window_.clear(sf::Color(20, 20, 20));
     drawMap();
     drawPlayer();
