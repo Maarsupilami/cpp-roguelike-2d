@@ -22,7 +22,12 @@ add_library(core_lib INTERFACE)
 target_include_directories(core_lib INTERFACE src/core)
 
 # ── dungeon (main executable) ─────────────────────────────────────────────────
-add_executable(dungeon src/main.cpp src/game/game.cpp src/game/map.cpp)
+add_executable(dungeon
+    src/main.cpp
+    src/game/game.cpp
+    src/game/map.cpp
+    src/game/render.cpp
+)
 target_link_libraries(dungeon
     SFML::Graphics
     SFML::Window

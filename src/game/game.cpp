@@ -1,8 +1,9 @@
 #include "game.h"
 
 Game::Game()
-    : window_(sf::VideoMode({800, 600}), "DungeonRPG"),
-      playerRow_(1), playerCol_(1)
+    :   window_(sf::VideoMode({800, 600}), "DungeonRPG"),
+        renderer_(window_),
+        playerRow_(1), playerCol_(1)
 {};
 
 void Game::run() {
@@ -10,15 +11,15 @@ void Game::run() {
         while (const std::optional event = window_.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window_.close();
-            switch (gameState_) {
-                case GameState::EXPLORE:
+            switch (state_) {
+                case GameState::Explore:
                     handleExploreInput(*event);
                     break;
             }
         }
-        switch (gameState_) {
-            case GameState::EXPLORE:
-                renderExplore();
+        switch (state_) {
+            case GameState::Explore:
+                renderer_.renderExplore(map_, playerRow_, playerCol_);
                 break;
         }
     }
@@ -44,29 +45,4 @@ void Game::handleExploreInput(const sf::Event& event) {
             playerCol_ = newCol;
         }
     }
-}
-
-void Game::renderExplore() {
-    window_.clear(sf::Color(20, 20, 20));
-    drawMap();
-    drawPlayer();
-    window_.display();
-}
-
-void Game::drawMap() {
-    for (int r = 0; r < ROWS; ++r) {
-        for (int c = 0; c < COLS; ++c) {
-            tile_.setFillColor(!map_.isWalkable(r, c)
-                ? sf::Color(80, 80, 80)
-                : sf::Color(60, 40, 20));
-            tile_.setPosition(sf::Vector2f(c * TILE_SIZE, r * TILE_SIZE));
-            window_.draw(tile_);
-        }
-    }
-}
-
-void Game::drawPlayer() {
-    player_.setFillColor(sf::Color::Magenta);
-    player_.setPosition(sf::Vector2f(playerCol_ * TILE_SIZE, playerRow_ * TILE_SIZE));
-    window_.draw(player_);
 }
