@@ -46,7 +46,7 @@ class Render {
         Direction           prevDir_   = Direction::Down;
         int                 currentFrame_ = 0;
         float               frameTime_ = 0.f;
-        const float         FRAME_DURATION = 0.15f;
+        static constexpr float FRAME_DURATION = 0.15f;
         // Enemy
         sf::Texture         enemyTextureDown_;
         sf::Sprite          enemySprite_{enemyTextureDown_};

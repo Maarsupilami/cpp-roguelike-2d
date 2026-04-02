@@ -65,7 +65,7 @@ void Render::drawPlayer(float pixelX, float pixelY, Direction direction, PlayerS
     } else {
         // Idle: time-based animation.
         frameTime_ += animClock_.restart().asSeconds();
-        if (frameTime_ >= 0.15f) {
+        if (frameTime_ >= FRAME_DURATION) {
             frameTime_ = 0.f;
             currentFrame_ = (currentFrame_ + 1) % frameCount;
         }
@@ -120,7 +120,7 @@ void Render::drawPlayer(float pixelX, float pixelY, Direction direction, PlayerS
 
 void Render::drawEnemy(int row, int col) {
     enemyFrameTime_ += enemyClock_.restart().asSeconds();
-    if (enemyFrameTime_ >= 0.15f) {
+    if (enemyFrameTime_ >= FRAME_DURATION) {
         enemyFrameTime_ = 0.f;
         enemyFrame_ = (enemyFrame_ + 1) % 4;
     }
