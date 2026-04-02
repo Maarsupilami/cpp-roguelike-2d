@@ -33,7 +33,11 @@ class Render {
         sf::RenderWindow&   window_;
         sf::Font            font_;
         sf::Text            hud_{font_, "", 16};
-        sf::RectangleShape  tile_{sf::Vector2f(TILE_SIZE, TILE_SIZE)};
+        // Terrain textures & sprites
+        sf::Texture         floorTexture_;
+        sf::Sprite          floorSprite_{floorTexture_};
+        sf::Texture         wallTexture_;
+        sf::Sprite          wallSprite_{wallTexture_};
         sf::Texture         playerTextureDown_;
         sf::Texture         playerTextureUp_;
         sf::Texture         playerTextureSide_;

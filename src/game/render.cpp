@@ -4,6 +4,11 @@
 Render::Render(sf::RenderWindow& window) : window_(window) {
     if (!font_.openFromFile("assets/fonts/PressStart2P-Regular.ttf"))
         throw std::runtime_error("Failed to load font: PressStart2P-Regular.ttf");
+    // Wall and Floor tiles
+    if (!floorTexture_.loadFromFile("assets/Terrain/Snow/Snow_1.png"))
+        throw std::runtime_error("Failed to load texture: Snow_1.png");
+    if (!wallTexture_.loadFromFile("assets/Terrain/Snow/Cliff_Top.png"))
+        throw std::runtime_error("Failed to load texture: Cliff_Top.png");
     // Idle textures
     if (!playerTextureDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Down-Sheet_.png"))
         throw std::runtime_error("Failed to load texture: Idle_Down-Sheet.png");
@@ -21,6 +26,11 @@ Render::Render(sf::RenderWindow& window) : window_(window) {
     playerSprite_.setTextureRect(sf::IntRect({0, 0}, {64, 64}));
     if (!enemyTextureDown_.loadFromFile("assets/Entities/Mobs/Orc Crew/Orc - Rogue/Idle/Idle-Sheet.png"))
         throw std::runtime_error("Failed to load texture: Idle-Sheet.png");
+    // Sprites are initialised with empty textures in the header, so the
+    // textureRect defaults to {0,0,0,0}.  Explicitly set it to the full
+    // tile size after loading so the sprites render correctly.
+    floorSprite_.setTextureRect(sf::IntRect({0, 0}, {TILE_SIZE, TILE_SIZE}));
+    wallSprite_.setTextureRect(sf::IntRect({0, 0}, {TILE_SIZE, TILE_SIZE}));
 }
 
 void Render::renderExplore(
@@ -39,11 +49,13 @@ void Render::renderExplore(
 void Render::drawMap(const Map& map) {
     for (int r = 0; r < ROWS; ++r) {
         for (int c = 0; c < COLS; ++c) {
-            tile_.setFillColor(!map.isWalkable(r, c)
-                ? sf::Color(80, 80, 80)
-                : sf::Color(60, 40, 20));
-            tile_.setPosition(sf::Vector2f(c * TILE_SIZE, r * TILE_SIZE));
-            window_.draw(tile_);
+            if (map.isWalkable(r, c)) {
+                floorSprite_.setPosition(sf::Vector2f(c * TILE_SIZE, r * TILE_SIZE));
+                window_.draw(floorSprite_);
+            } else {
+                wallSprite_.setPosition(sf::Vector2f(c * TILE_SIZE, r * TILE_SIZE));
+                window_.draw(wallSprite_);
+            }
         }
     }
 }
