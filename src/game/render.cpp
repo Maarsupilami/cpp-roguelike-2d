@@ -12,12 +12,12 @@ Render::Render(sf::RenderWindow& window) : window_(window) {
     if (!playerTextureSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Idle_Base/Idle_Side-Sheet_.png"))
         throw std::runtime_error("Failed to load texture: Idle_Side-Sheet.png");
     // Walking textures
-    if (!playerTextureWalkingDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Run_Base/Run_Down-Sheet.png"))
-        throw std::runtime_error("Failed to load texture: Run_Down-Sheet.png");
-    if (!playerTextureWalkingUp_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Run_Base/Run_Up-Sheet.png"))
-        throw std::runtime_error("Failed to load texture: Run_Up-Sheet.png");
-    if (!playerTextureWalkingSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Run_Base/Run_Side-Sheet.png"))
-        throw std::runtime_error("Failed to load texture: Run_Side-Sheet.png");
+    if (!playerTextureWalkingDown_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Walk_Base/Walk_Down-Sheet_.png"))
+        throw std::runtime_error("Failed to load texture: Walk_Down-Sheet_.png");
+    if (!playerTextureWalkingUp_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Walk_Base/Walk_Up-Sheet_.png"))
+        throw std::runtime_error("Failed to load texture: Walk_Up-Sheet_.png");
+    if (!playerTextureWalkingSide_.loadFromFile("assets/Entities/Characters/Body_A/Animations/Walk_Base/Walk_Side-Sheet_.png"))
+        throw std::runtime_error("Failed to load texture: Walk_Side-Sheet_.png");
     playerSprite_.setTextureRect(sf::IntRect({0, 0}, {64, 64}));
     if (!enemyTextureDown_.loadFromFile("assets/Entities/Mobs/Orc Crew/Orc - Rogue/Idle/Idle-Sheet.png"))
         throw std::runtime_error("Failed to load texture: Idle-Sheet.png");
